@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Working hours counter</string>
+    <string name="start">Beginning of work</string>
+    <string name="end">End of work</string>
+    <string name="save">Save</string>
+    <string name="rate_per">Rate per hour of work</string>
+    <string name="earned_money">Earned money for all hours of work</string>
+</resources>
