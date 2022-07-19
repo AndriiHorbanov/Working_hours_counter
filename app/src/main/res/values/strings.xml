@@ -5,4 +5,6 @@
     <string name="save">Save</string>
     <string name="rate_per">Rate per hour of work</string>
     <string name="earned_money">Earned money for all hours of work</string>
+    <string name="view_list_start">Your start time work:</string>
+    <string name="view_list_end">Your end time work:</string>
 </resources>

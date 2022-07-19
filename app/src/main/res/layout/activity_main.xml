@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-
+        android:layout_marginTop="16dp"
         android:hint="@string/start"
-        android:inputType="textPersonName"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:hint="@string/end"
-        android:inputType="textPersonName"
+        android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_work" />
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:hint="@string/rate_per"
-        android:inputType="textPersonName"
+        android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/end_work" />
@@ -49,15 +49,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rate" />
 
-    <ListView
-        android:id="@+id/list_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="20dp"
         app:layout_constraintBottom_toTopOf="@+id/hours"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
 
     <TextView
         android:id="@+id/hours"
@@ -66,7 +68,7 @@
         android:layout_margin="20dp"
         android:text="Total number of hours"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_view" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerview_view" />
 
     <TextView
         android:id="@+id/money"
