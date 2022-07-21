@@ -1,15 +1,11 @@
 package com.example.workinghourscounter
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.workinghourscounter.R.id.start_time_work
+import com.example.workinghourscounter.R.id.start_time_work_hours
 import kotlinx.android.synthetic.main.view_list_fragment.view.*
 
 class MyAdapter: RecyclerView.Adapter<MyAdapter.MyHolder>() {
@@ -26,7 +22,7 @@ class MyAdapter: RecyclerView.Adapter<MyAdapter.MyHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        holder.itemView.start_time_work.text = timeList[position].startTime
+        holder.itemView.start_time_work_hours.text = timeList[position].startTime
         holder.itemView.end_time_work.text = timeList[position].EndTime
 
     }

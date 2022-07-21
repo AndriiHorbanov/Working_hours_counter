@@ -8,4 +8,5 @@
     <string name="view_list_start">Your start time work:</string>
     <string name="view_list_end">Your end time work:</string>
     <string name="total_number_of_hours">Total number of hours</string>
+    <string name="ok">ok</string>
 </resources>
