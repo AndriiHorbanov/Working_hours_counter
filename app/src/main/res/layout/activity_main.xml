@@ -6,28 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/start_work"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/start_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_marginTop="16dp"
-        android:hint="@string/start"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/start"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp"
+        />
 
-    <EditText
-        android:id="@+id/end_work"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/end_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:hint="@string/end"
-        android:inputType="time"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/end"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_work" />
+        app:layout_constraintTop_toBottomOf="@+id/start_time"
+        android:layout_margin="20dp"
+        />
 
     <EditText
         android:id="@+id/rate"
@@ -35,10 +32,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:hint="@string/rate_per"
-        android:inputType="time"
+        android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_work" />
+        app:layout_constraintTop_toBottomOf="@+id/end_time" />
 
     <Button
         android:id="@+id/button"
@@ -66,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="Total number of hours"
+        android:text="@string/total_number_of_hours"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerview_view" />
 

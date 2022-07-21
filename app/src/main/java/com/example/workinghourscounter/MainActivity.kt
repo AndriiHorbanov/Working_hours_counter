@@ -22,22 +22,22 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerviewView.layoutManager
         binding.recyclerviewView.adapter = adapter
 
-
-
-
-
-
-
         binding.button.setOnClickListener {
             if (binding.startWork.text.isNullOrEmpty()) {
-                } else {
-                dataList.add(DataTime(binding.startWork.text.toString(),binding.endWork.text.toString() ))
-                    adapter.setList(dataList)
+            } else {
+                dataList.add(
+                    DataTime(
+                        binding.startWork.text.toString(),
+                        binding.endWork.text.toString()
+                    )
+                )
+                adapter.setList(dataList)
             }
 
 
-
         }
+
+
 
 //    private fun addListItems(): String{
 //        val saved  = binding.startWork.toString()
