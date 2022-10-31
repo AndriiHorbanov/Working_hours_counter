@@ -1,9 +1,9 @@
 package com.example.workinghourscounter.date
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 
 class TimeRepository(private val timeDao: TimeDao) {
-    val readAllData: LiveData<List<Time>> = timeDao.readAll()
+    fun readAllData(): Flow<List<Time>> = timeDao.readAll()
 
     suspend fun addTime(time: Time){
         timeDao.addTime(time)

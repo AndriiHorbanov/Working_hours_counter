@@ -10,6 +10,7 @@ abstract class TimeDatabase : RoomDatabase() {
     abstract fun timeDao(): TimeDao
 
     companion object {
+        const val DATABASE_NAME = "time_table"
         @Volatile
         private var INSTANCE: TimeDatabase? = null
 
@@ -22,7 +23,7 @@ abstract class TimeDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     TimeDatabase::class.java,
-                    "time_table"
+                    DATABASE_NAME
                 ).build()
                 INSTANCE = instance
                 return instance

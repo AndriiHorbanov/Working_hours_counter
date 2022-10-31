@@ -1,4 +1,5 @@
 package com.example.workinghourscounter
 
-data class DataTime(var startTime: String, var EndTime: String) {
+data class DataTime(val startTime: String = "", val endTime: String = "") {
+
 }
