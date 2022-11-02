@@ -1,9 +1,6 @@
 package com.example.workinghourscounter.date
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,4 +11,7 @@ interface TimeDao {
 
     @Query("SELECT * FROM time_table ORDER BY id ASC")
     fun readAll():Flow<List<Time>>
+
+    @Delete
+    suspend fun deleteTime(time:Time)
 }

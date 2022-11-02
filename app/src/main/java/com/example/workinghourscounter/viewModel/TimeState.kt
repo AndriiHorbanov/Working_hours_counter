@@ -1,5 +1,5 @@
 package com.example.workinghourscounter.viewModel
 
-import com.example.workinghourscounter.DataTime
+import com.example.workinghourscounter.TimeUI
 
-data class TimeState(val timeList: List<DataTime> = emptyList(), val errorMessage: String = "")
+data class TimeState(val timeList: List<TimeUI> = emptyList(), val errorMessage: String = "")

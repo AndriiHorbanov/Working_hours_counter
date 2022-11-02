@@ -8,4 +8,8 @@ class TimeRepository(private val timeDao: TimeDao) {
     suspend fun addTime(time: Time){
         timeDao.addTime(time)
     }
+
+    suspend fun deleteTime(time: Time){
+        timeDao.deleteTime(time)
+    }
 }

@@ -9,11 +9,9 @@ import kotlinx.android.synthetic.main.view_list_fragment.view.*
 
 class MyAdapter : RecyclerView.Adapter<MyAdapter.MyHolder>() {
 
-    private var timeList = emptyList<DataTime>()
+    private var timeList = emptyList<TimeUI>()
 
-
-    class MyHolder(view: View) : RecyclerView.ViewHolder(view) {
-    }
+    var onDeleteClick: ((TimeUI) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
         val view =
@@ -22,11 +20,13 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        holder.itemView.start_time_work_hours.text = timeList[position].startTime
-        holder.itemView.end_time_work.text = timeList[position].endTime
-
+        val timeUI = timeList[position]
+        holder.itemView.start_time_work_hours.text = timeUI.startTime
+        holder.itemView.end_time_work.text = timeUI.endTime
+        holder.itemView.delete.setOnClickListener {
+            onDeleteClick?.invoke(timeUI)
+        }
     }
-
 
     override fun getItemCount(): Int {
         return timeList.size
@@ -34,9 +34,13 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyHolder>() {
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<DataTime>) {
+    fun setList(list: List<TimeUI>) {
         timeList = list
         notifyDataSetChanged()
     }
+
+
+    class MyHolder(view: View) : RecyclerView.ViewHolder(view)
 }
+
 

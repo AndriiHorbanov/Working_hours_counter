@@ -1,6 +1,5 @@
 package com.example.workinghourscounter
 
-
 import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -17,43 +16,72 @@ import kotlinx.android.synthetic.main.warning_dialog.view.*
 import kotlinx.coroutines.launch
 import java.util.*
 
-val calendar = Calendar.getInstance()
-val hour = calendar.get(Calendar.HOUR_OF_DAY)
-val minet = calendar.get(Calendar.MINUTE)
-
 class MainActivity : AppCompatActivity() {
+
+    private val adapter by lazy { MyAdapter() }
+    private lateinit var binding: ActivityMainBinding
     private val viewModel: MyViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-        val binding: ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+
+        initBinding()
+
         setContentView(binding.root)
-        val adapter = MyAdapter()
+
+        setAdapter()
+
+        observeState()
+
+        setStartTimeListener()
+
+        setEndTimeListener()
+
+        setSaveTimeListener()
+
+    }
+
+
+    private fun initBinding() {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    private fun setAdapter() {
         binding.recyclerviewView.adapter = adapter
+        adapter.onDeleteClick = { viewModel.deleteTime(it) }
+    }
 
-        lifecycleScope.launch{
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.state.collect{
-                    adapter.setList(it.timeList)
-                }
-            }
-
-        }
-
+    private fun setStartTimeListener() {
         binding.startTime.setOnClickListener {
             openTimePicker { hours, minutes ->
                 viewModel.setStartTime(hours, minutes)
             }
         }
+    }
 
+    private fun setEndTimeListener() {
         binding.endTime.setOnClickListener {
             openTimePicker { hours, minutes ->
                 viewModel.setEndTime(hours, minutes)
             }
         }
+    }
 
+    private fun setSaveTimeListener() {
         binding.saveButton.setOnClickListener {
             viewModel.saveTime()
+        }
+    }
+
+    private fun observeState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect {
+                    adapter.setList(it.timeList)
+                    if (it.errorMessage.isNotEmpty()) showWarningDialog()
+                }
+            }
+
         }
     }
 
@@ -71,10 +99,13 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun openTimePicker(onTimeSet: (Int, Int) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val pickerMinutes = calendar.get(Calendar.MINUTE)
         val picker =
-            TimePickerDialog(this, { view, hourOfDay, minute ->
-                onTimeSet(hourOfDay, minute)
-            }, hour, minet, is24HourFormat(this))
+            TimePickerDialog(this, { _, hourOfDay, minutes ->
+                onTimeSet(hourOfDay, minutes)
+            }, hour, pickerMinutes, is24HourFormat(this))
         picker.show()
     }
 
