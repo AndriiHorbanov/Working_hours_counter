@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class MyViewModel(application: Application) : AndroidViewModel(application) {
     private var lastTime = Time()
@@ -23,6 +25,8 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _state = MutableStateFlow(TimeState())
     val state: StateFlow<TimeState> = _state.asStateFlow()
+
+    private var rate: Double? = null
 
     init {
         val timeDao = TimeDatabase.getDataBase(application).timeDao()
@@ -43,35 +47,62 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     private fun updateTimeList(timeList: List<Time>) {
         _state.update {
             it.copy(timeList = timeList.map { timeObj ->
-                TimeUI(
-                    id = timeObj.id,
-                    startTime = timeObj.startHours.convertToString() + DELIMITER + timeObj.startMinutes.convertToString(),
-                    endTime = timeObj.endHours.convertToString() + DELIMITER + timeObj.endMinutes.convertToString()
-                )
+                with(timeObj) {
+                    TimeUI(
+                        id = id,
+                        startTime = startMinutes.convertToTime(),
+                        earning = BigDecimal(earning).setScale(2,RoundingMode.HALF_EVEN).toString(),
+                        totalTime = totalMinutes.convertToTime(),
+                        endTime = endMinutes.convertToTime()
+                    )
+                }
             })
 
         }
     }
 
-    private fun Int.convertToString() = toString().padStart(2, '0')
+    private  fun Int.convertToTime():String {
+        val hours = (this/60).toString().padStartZero()
+        val minutes = (this%60).toString().padStartZero()
+        return "$hours:$minutes"
+    }
+    
+    private fun String.padStartZero() = padStart(2, '0')
 
     fun setStartTime(hour: Int, minutes: Int) {
 
-        lastTime = lastTime.copy(startHours = hour, startMinutes = minutes)
+        lastTime = lastTime.copy(startMinutes = minutes + hour * 60)
     }
 
     fun setEndTime(hour: Int, minutes: Int) {
-        lastTime = lastTime.copy(endHours = hour, endMinutes = minutes)
+        lastTime = lastTime.copy(endMinutes = minutes + hour * 60)
     }
+
+
+    fun setRate(rate: String) {
+        val tempRate = rate.toDoubleOrNull()
+        tempRate?.let {
+            if (it>0) this.rate = it
+        }
+
+    }
+
 
     fun saveTime() {
         when {
-            lastTime.isFilled() -> {
+            lastTime.isFilled() && isRateFilled() -> {
+                calculateEarning(rate!!)
                 addTime()
                 hideError()
             }
             else -> showError()
         }
+    }
+
+    private fun isRateFilled() = rate != null
+
+    private fun calculateEarning(rate: Double) {
+        lastTime = lastTime.copy(earning = rate * lastTime.totalMinutes/60)
     }
 
     private fun addTime() {
@@ -81,12 +112,12 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun clearTime(){
+    private fun clearTime() {
         lastTime = Time()
     }
 
-    fun deleteTime(time : TimeUI){
-        viewModelScope.launch ( Dispatchers.IO ) {
+    fun deleteTime(time: TimeUI) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.deleteTime(Time(id = time.id))
         }
     }
@@ -97,15 +128,10 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun hideError(){
+    private fun hideError() {
         _state.update {
             it.copy(errorMessage = "")
         }
     }
-
-    private companion object {
-        const val DELIMITER = " : "
-    }
-
 
 }

@@ -23,6 +23,8 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyHolder>() {
         val timeUI = timeList[position]
         holder.itemView.start_time_work_hours.text = timeUI.startTime
         holder.itemView.end_time_work.text = timeUI.endTime
+        holder.itemView.day_hours.text = timeUI.totalTime
+        holder.itemView.day_earnings.text = timeUI.earning
         holder.itemView.delete.setOnClickListener {
             onDeleteClick?.invoke(timeUI)
         }

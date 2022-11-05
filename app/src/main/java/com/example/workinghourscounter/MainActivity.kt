@@ -3,6 +3,8 @@ package com.example.workinghourscounter
 import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.format.DateFormat.is24HourFormat
 import android.view.View
 import androidx.activity.viewModels
@@ -37,6 +39,8 @@ class MainActivity : AppCompatActivity() {
 
         setEndTimeListener()
 
+        setRateListener()
+
         setSaveTimeListener()
 
     }
@@ -67,9 +71,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun setRateListener() {
+        binding.rate.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                p0?.let {
+                    viewModel.setRate(it.toString())
+                }
+            }
+        })
+    }
+
     private fun setSaveTimeListener() {
         binding.saveButton.setOnClickListener {
             viewModel.saveTime()
+
         }
     }
 
@@ -108,6 +130,9 @@ class MainActivity : AppCompatActivity() {
             }, hour, pickerMinutes, is24HourFormat(this))
         picker.show()
     }
+
+    //state
+    //AM
 
 }
 
