@@ -35,7 +35,8 @@
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_time" />
+        app:layout_constraintTop_toBottomOf="@+id/end_time"
+        android:autofillHints="Rate per hor of work" />
 
     <Button
         android:id="@+id/save_button"
@@ -56,6 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/save_button"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/view_list_fragment"
         />
 
     <TextView
@@ -63,18 +65,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="@string/total_number_of_hours"
+        android:text="@string/total_time"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerview_view" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerview_view"
+        tools:text="Total time: 60h20m"
+        />
 
     <TextView
         android:id="@+id/money"
         android:layout_margin="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/earned_money"
+        android:text="@string/total_earned_money"
         app:layout_constraintTop_toBottomOf="@+id/hours"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Earned finance: 300$"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

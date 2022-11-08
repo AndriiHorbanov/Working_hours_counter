@@ -4,11 +4,12 @@
     <string name="end">Set end of work</string>
     <string name="save">Save</string>
     <string name="rate_per">Rate per hour of work</string>
-    <string name="earned_money">Earned money for all hours of work</string>
-    <string name="view_list_start">Your start time work:</string>
-    <string name="view_list_end">Your end time work:</string>
-    <string name="view_money_score">Money score:</string>
-    <string name="total_number_of_hours">Total number of hours</string>
+    <string name="total_earned_money">Earned: %1$.2f</string>
+    <string name="holder_start_time">Start time %1$02d : %2$02d</string>
+    <string name="holder_end_time">End time %1$02d : %2$02d</string>
+    <string name="holder_total_hours">Work time: %1$02dh:%2$02dm</string>
+    <string name="holder_total_earning">Earned: %1$.2f</string>
+    <string name="total_time">Total time: %1$02dh%2$02dm</string>
     <string name="ok">OK</string>
     <string name="delete">Delete</string>
 </resources>

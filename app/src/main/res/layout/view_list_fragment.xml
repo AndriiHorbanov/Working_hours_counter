@@ -3,59 +3,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="84dp">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/start_time_work_hours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:text="@string/view_list_start"
+        android:text="@string/holder_start_time"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/day_hours"
+        android:layout_marginStart="16dp"
+        tools:text="Start time 10:00"
+        />
 
 
     <TextView
         android:id="@+id/end_time_work"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:text="@string/view_list_end"
+        android:text="@string/holder_end_time"
+        app:layout_constraintEnd_toStartOf="@+id/delete"
         app:layout_constraintStart_toEndOf="@+id/start_time_work_hours"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/day_earnings"
+        tools:text="Start time 11:00"
+        />
 
     <TextView
-        android:id="@+id/day_earnings"
-        tools:text="Price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        app:layout_constraintStart_toEndOf="@+id/day_hours"
-        app:layout_constraintTop_toBottomOf="@+id/end_time_work" />
-
-    <TextView
-        tools:text="Hours"
         android:id="@+id/day_hours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_time_work_hours" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/start_time_work_hours"
+        app:layout_constraintTop_toBottomOf="@+id/start_time_work_hours"
+        tools:text="Hours: 100h:30m" />
+
+    <TextView
+        android:id="@+id/day_earnings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/end_time_work"
+        app:layout_constraintTop_toBottomOf="@+id/end_time_work"
+        tools:text="Earning: 40" />
+
 
     <ImageButton
         android:id="@+id/delete"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:minHeight="48dp"
+        android:layout_height="wrap_content"
         android:src="@drawable/delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/start_time_work_hours"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="150dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
         android:contentDescription="@string/delete"
+        android:layout_margin="16dp"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

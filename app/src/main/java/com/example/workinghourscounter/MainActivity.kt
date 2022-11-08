@@ -5,24 +5,22 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.text.format.DateFormat.is24HourFormat
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.workinghourscounter.databinding.ActivityMainBinding
-import com.example.workinghourscounter.viewModel.MyViewModel
-import kotlinx.android.synthetic.main.warning_dialog.view.*
+import com.example.workinghourscounter.databinding.WarningDialogBinding
+import com.example.workinghourscounter.viewModel.TimeViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val adapter by lazy { MyAdapter() }
+    private val adapter by lazy { TimeAdapter() }
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MyViewModel by viewModels()
+    private val viewModel: TimeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         setAdapter()
 
         observeState()
+
+//        observeTotalEarning()
 
         setStartTimeListener()
 
@@ -98,23 +98,33 @@ class MainActivity : AppCompatActivity() {
     private fun observeState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect {
-                    adapter.setList(it.timeList)
-                    if (it.errorMessage.isNotEmpty()) showWarningDialog()
+                viewModel.state.collect { state ->
+                    adapter.setList(state.timeList)
+                    setTotalEarning(state.totalEarning)
+                    setTotalTime(state.totalHours, state.totalMinutes)
+                    if (state.errorMessage.isNotEmpty()) showWarningDialog()
                 }
             }
 
         }
     }
 
+    fun setTotalTime(totalHours: Int, totalMinutes: Int){
+        binding.hours.text = getString(R.string.total_time, totalHours, totalMinutes)
+    }
+
+    fun setTotalEarning(totalEarning: Double) {
+        binding.money.text = getString(R.string.total_earned_money, totalEarning)
+    }
+
     private fun showWarningDialog() {
-        val warning = View.inflate(this@MainActivity, R.layout.warning_dialog, null)
+        val dialogBinding = WarningDialogBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setView(warning)
+        builder.setView(dialogBinding.root)
         val dialog = builder.create()
         dialog.show()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        warning.ok_button.setOnClickListener {
+        dialogBinding.okButton.setOnClickListener {
             dialog.dismiss()
         }
     }
@@ -127,12 +137,8 @@ class MainActivity : AppCompatActivity() {
         val picker =
             TimePickerDialog(this, { _, hourOfDay, minutes ->
                 onTimeSet(hourOfDay, minutes)
-            }, hour, pickerMinutes, is24HourFormat(this))
+            }, hour, pickerMinutes, true)
         picker.show()
     }
-
-    //state
-    //AM
-
 }
 

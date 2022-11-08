@@ -13,10 +13,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.math.BigDecimal
-import java.math.RoundingMode
 
-class MyViewModel(application: Application) : AndroidViewModel(application) {
+class TimeViewModel(application: Application) : AndroidViewModel(application) {
     private var lastTime = Time()
 
     private val repository: TimeRepository
@@ -45,29 +43,40 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun updateTimeList(timeList: List<Time>) {
-        _state.update {
-            it.copy(timeList = timeList.map { timeObj ->
-                with(timeObj) {
-                    TimeUI(
-                        id = id,
-                        startTime = startMinutes.convertToTime(),
-                        earning = BigDecimal(earning).setScale(2,RoundingMode.HALF_EVEN).toString(),
-                        totalTime = totalMinutes.convertToTime(),
-                        endTime = endMinutes.convertToTime()
-                    )
-                }
-            })
+        _state.update { state ->
+            state.copy(
+                timeList = timeList.map { timeObj ->
+                    with(timeObj) {
+                        TimeUI(
+                            id = id,
+                            startHours = startMinutes.toHours(),
+                            startMinutes = startMinutes.toMinutes(),
+                            endHours = endMinutes.toHours(),
+                            endMinutes = endMinutes.toMinutes(),
+                            earning = earning,
+                            totalHours = totalMinutes.toHours(),
+                            totalMinutes = totalMinutes.toMinutes(),
+                        )
+                    }
+                },
+                totalEarning = timeList.sumOf {
+                    it.earning
+                },
+                totalHours = timeList.sumOf {
+                    it.endMinutes - it.startMinutes
+                }.toHours(),
+                totalMinutes = timeList.sumOf {
+                    it.endMinutes - it.startMinutes
+                }.toMinutes(),
+            )
 
         }
     }
 
-    private  fun Int.convertToTime():String {
-        val hours = (this/60).toString().padStartZero()
-        val minutes = (this%60).toString().padStartZero()
-        return "$hours:$minutes"
-    }
-    
-    private fun String.padStartZero() = padStart(2, '0')
+    private fun Int.toHours(): Int = (this / 60)
+
+
+    private fun Int.toMinutes(): Int = (this % 60)
 
     fun setStartTime(hour: Int, minutes: Int) {
 
@@ -82,7 +91,7 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     fun setRate(rate: String) {
         val tempRate = rate.toDoubleOrNull()
         tempRate?.let {
-            if (it>0) this.rate = it
+            if (it > 0) this.rate = it
         }
 
     }
@@ -102,7 +111,7 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     private fun isRateFilled() = rate != null
 
     private fun calculateEarning(rate: Double) {
-        lastTime = lastTime.copy(earning = rate * lastTime.totalMinutes/60)
+        lastTime = lastTime.copy(earning = rate * lastTime.totalMinutes / 60)
     }
 
     private fun addTime() {
@@ -133,5 +142,4 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
             it.copy(errorMessage = "")
         }
     }
-
 }

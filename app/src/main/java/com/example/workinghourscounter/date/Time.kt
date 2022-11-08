@@ -21,6 +21,6 @@ data class Time(
 
     private companion object {
         const val DEFAULT_VALUE = -1
-        const val DEFAULT_VALUE_DOUBLE = -1.0
+        const val DEFAULT_VALUE_DOUBLE = 0.0
     }
 }
